@@ -1,314 +1,313 @@
-# VirtualBox Detection Bypass Scripts
+# VirtualBox Detection Bypass Toolkit
 
-Kumpulan script untuk mendeteksi, menerapkan, dan mengembalikan bypass deteksi VirtualBox. Script ini dibuat untuk keperluan testing dan research, bukan untuk aktivitas ilegal.
+Toolkit komprehensif untuk mendeteksi, menghindari, dan mengembalikan deteksi VirtualBox. Script ini dibuat untuk keperluan testing, research, dan development yang legitimate.
 
 ## ⚠️ Disclaimer
 
-Script ini dibuat untuk:
-- **Testing aplikasi** dalam environment virtual
-- **Security research** dan analisis malware
-- **Development purposes** tanpa interference detection
-- **Educational purposes** untuk memahami VM detection
+**PENTING: Gunakan toolkit ini secara bertanggung jawab!**
 
-**TIDAK** untuk aktivitas ilegal atau melanggar ToS aplikasi tertentu.
+✅ **Penggunaan yang Diizinkan:**
+- Testing aplikasi dalam environment virtual
+- Security research dan analisis malware
+- Development dan debugging
+- Educational purposes
 
-## 📁 File Structure
+❌ **TIDAK untuk:**
+- Aktivitas ilegal atau melanggar ToS
+- Fraud atau penipuan
+- Bypass security sistem production
+
+## 📁 Struktur File
 
 ```
-vbox-bypass/
-├── vbox-detect-initial.ps1    # Deteksi kondisi awal (Guest OS)
-├── vbox-bypass-apply.ps1      # Terapkan bypass (Guest OS)
-├── vbox-bypass-restore.ps1    # Kembalikan kondisi awal (Guest OS)
-├── vbox-host-config.sh        # Konfigurasi host VirtualBox
-├── vbox-test-simple.ps1       # Test script sederhana
-└── README.md                  # Dokumentasi ini
-```
-
-## 🖥️ Script untuk Guest OS (Windows)
-
-### 1. vbox-detect-initial.ps1
-
-**Fungsi:** Mendeteksi kondisi awal VirtualBox di dalam VM (Guest OS)
-
-**Yang Dideteksi:**
-- Registry keys VirtualBox
-- Running processes (VBoxService, VBoxTray)
-- System information (Manufacturer, BIOS)
-- Network adapters (MAC address)
-- Hardware devices VirtualBox
-- Services VirtualBox
-
-**Usage:**
-```powershell
-# Jalankan sebagai Administrator
-.\vbox-detect-initial.ps1
-```
-
-**Output:**
-- Backup directory dengan timestamp
-- File JSON untuk setiap komponen
-- Detection report lengkap
-
-### 2. vbox-bypass-apply.ps1
-
-**Fungsi:** Menerapkan bypass detection VirtualBox
-
-**Modifikasi yang Dilakukan:**
-- Hapus registry VirtualBox Guest Additions
-- Ubah System BIOS information
-- Stop dan rename VirtualBox processes
-- Spoof system manufacturer (Dell Inc.)
-- Disable VirtualBox services
-- Buat hardware legitimacy markers
-- Bersihkan installation traces
-
-**Usage:**
-```powershell
-# Jalankan sebagai Administrator
-.\vbox-bypass-apply.ps1
-
-# Skip confirmation
-.\vbox-bypass-apply.ps1 -SkipConfirmation
-
-# Specify backup directory
-.\vbox-bypass-apply.ps1 -BackupDir "vbox-backup-20231201-143022"
-```
-
-**⚠️ Penting:** Restart system setelah apply untuk efek maksimal.
-
-### 3. vbox-bypass-restore.ps1
-
-**Fungsi:** Mengembalikan kondisi awal VirtualBox
-
-**Yang Dikembalikan:**
-- Registry keys original
-- VirtualBox services
-- System information
-- VirtualBox processes
-- Hardware information
-
-**Usage:**
-```powershell
-# Jalankan sebagai Administrator
-.\vbox-bypass-restore.ps1
-
-# Pilih backup directory tertentu
-.\vbox-bypass-restore.ps1 -BackupDir "vbox-backup-20231201-143022"
-
-# Skip confirmation
-.\vbox-bypass-restore.ps1 -SkipConfirmation
-```
-
-## 🖥️ Script untuk Host OS (Linux/WSL)
-
-### vbox-host-config.sh
-
-**Fungsi:** Konfigurasi VirtualBox di HOST untuk menghindari detection
-
-**Modifikasi yang Dilakukan:**
-- Change MAC address (Dell prefix)
-- Set EFI firmware
-- Disable paravirtualization
-- Spoof system information (Dell OptiPlex 7090)
-- Configure motherboard info
-- Set CPU information (Intel i7-8550U)
-- Configure BIOS information
-
-**Usage:**
-```bash
-# Buat file executable
-chmod +x vbox-host-config.sh
-
-# Edit VM name di script (default: Windows10)
-nano vbox-host-config.sh
-
-# Detect current configuration
-./vbox-host-config.sh detect
-
-# Apply bypass
-./vbox-host-config.sh apply
-
-# Restore original
-./vbox-host-config.sh restore ./vbox-backup-20231201-143022
+vbox-bypass-toolkit/
+├── 01-test-execution.ps1      # Test PowerShell execution (MULAI DARI SINI)
+├── 02-detect-virtualbox.ps1   # Deteksi kondisi VirtualBox saat ini
+├── 03-apply-bypass.ps1        # Terapkan bypass detection
+├── 04-restore-original.ps1    # Kembalikan ke kondisi original  
+├── 05-host-configuration.sh   # Konfigurasi dari HOST OS
+└── README.md                  # Dokumentasi lengkap
 ```
 
 ## 🚀 Quick Start Guide
 
-### Untuk Guest OS (dalam VM):
+### Step 1: Test PowerShell Execution
 
-1. **Copy scripts** ke dalam VM Windows
-2. **Buka PowerShell as Administrator**
-3. **Set execution policy** (jika diperlukan):
-   ```powershell
-   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-   ```
-4. **Detect kondisi awal:**
-   ```powershell
-   .\vbox-detect-initial.ps1
-   ```
-5. **Apply bypass:**
-   ```powershell
-   .\vbox-bypass-apply.ps1
-   ```
-6. **Restart VM**
-7. **Test aplikasi** yang sebelumnya terdeteksi VM
+**WAJIB dijalankan pertama kali untuk memastikan tidak ada masalah:**
 
-### Untuk Host OS:
+```powershell
+# Buka PowerShell as Administrator
+# Set execution policy untuk session ini
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 
-1. **Shutdown VM** terlebih dahulu
-2. **Edit script** untuk sesuaikan nama VM
-3. **Detect configuration:**
-   ```bash
-   ./vbox-host-config.sh detect
-   ```
-4. **Apply modifications:**
-   ```bash
-   ./vbox-host-config.sh apply
-   ```
-5. **Start VM** dan test
+# Test script paling dasar
+.\01-test-execution.ps1
+```
 
-## 📊 Tingkat Efektivitas
+**Jika ada error di Step 1, JANGAN lanjut ke step berikutnya!**
 
-| Metode | Success Rate | Kompleksitas | Impact |
+### Step 2: Deteksi VirtualBox
+
+```powershell
+# Jalankan detection script
+.\02-detect-virtualbox.ps1
+```
+
+**Output yang diharapkan:**
+- ✅ Backup directory dibuat
+- ✅ Deteksi VirtualBox components
+- ✅ JSON backup files tersimpan
+
+### Step 3: Apply Bypass
+
+```powershell
+# Terapkan bypass (HATI-HATI: Akan modify system!)
+.\03-apply-bypass.ps1
+
+# Atau force tanpa konfirmasi
+.\03-apply-bypass.ps1 -Force
+```
+
+### Step 4: Restart & Test
+
+```powershell
+# Restart system untuk efek penuh
+Restart-Computer
+```
+
+### Step 5: Restore (Jika Diperlukan)
+
+```powershell
+# Kembalikan ke kondisi original
+.\04-restore-original.ps1
+```
+
+## 🖥️ Script Details
+
+### 01-test-execution.ps1 ✅ **MULAI DARI SINI**
+
+**Fungsi:** Test dasar PowerShell execution
+**Wajib:** Ya, jalankan pertama kali
+**Output:** Verifikasi PowerShell, registry access, sistem info
+
+```powershell
+# Simple test - tidak mengubah apapun
+.\01-test-execution.ps1
+```
+
+### 02-detect-virtualbox.ps1 🔍
+
+**Fungsi:** Deteksi lengkap VirtualBox components
+**Input:** Tidak ada
+**Output:** Backup directory + JSON files
+**Deteksi:**
+- Registry VirtualBox Guest Additions
+- System manufacturer/BIOS info  
+- VirtualBox processes (VBoxService, VBoxTray)
+- Network adapters (MAC 08-00-27-*)
+- VirtualBox services
+
+### 03-apply-bypass.ps1 ⚡
+
+**Fungsi:** Bypass VirtualBox detection
+**Requires:** Administrator privileges
+**WARNING:** Modifikasi system registry!
+
+**Modifikasi yang dilakukan:**
+- ❌ Remove VirtualBox registry keys
+- 🔄 Change BIOS information → Dell Inc.
+- ⏹️ Stop VirtualBox processes
+- 🏭 Spoof manufacturer → Dell OptiPlex 7090
+- 🚫 Disable VirtualBox services
+- 💻 Change CPU info → Intel i7-8550U
+
+### 04-restore-original.ps1 🔄
+
+**Fungsi:** Restore kondisi original
+**Input:** Backup directory (auto-detect)
+**Restores:**
+- Registry keys original
+- VirtualBox services
+- System information
+- Service startup types
+
+### 05-host-configuration.sh 🏠
+
+**Fungsi:** Konfigurasi VirtualBox dari HOST OS
+**Platform:** Linux, macOS, Windows WSL
+**Requires:** VBoxManage command
+
+**Usage:**
+```bash
+# Set executable permission
+chmod +x 05-host-configuration.sh
+
+# Edit VM name di script
+nano 05-host-configuration.sh
+
+# Detect VM configuration
+./05-host-configuration.sh detect
+
+# Apply host-level bypass
+./05-host-configuration.sh apply
+
+# Restore original
+./05-host-configuration.sh restore backup_directory
+```
+
+## 📊 Efektivitas Bypass
+
+| Teknik | Success Rate | Kompleksitas | Impact |
 |--------|-------------|--------------|---------|
-| MAC Address Change | 90% | Rendah | Tinggi |
-| BIOS/SMBIOS Spoofing | 95% | Sedang | Sangat Tinggi |
-| Registry Cleanup | 85% | Rendah | Tinggi |
-| Process Management | 70% | Tinggi | Sedang |
-| Hardware Spoofing | 80% | Tinggi | Tinggi |
+| Registry Cleanup | 85% | 🟢 Rendah | 🔴 Tinggi |
+| BIOS/SMBIOS Spoofing | 95% | 🟡 Sedang | 🔴 Sangat Tinggi |
+| MAC Address Change | 90% | 🟢 Rendah | 🔴 Tinggi |
+| Process Management | 70% | 🔴 Tinggi | 🟡 Sedang |
+| Host-level Config | 95% | 🟡 Sedang | 🔴 Sangat Tinggi |
+
+**Rekomendasi:** Kombinasi 2-3 teknik untuk hasil maksimal.
 
 ## 🔧 Troubleshooting
 
-### PowerShell Script Tidak Berjalan / Parsing Error
+### PowerShell Script Error / Won't Run
 
-**Masalah:** Script dibuka dengan Notepad atau ada error parsing
-**Solusi:**
+**Problem:** Script dibuka dengan Notepad atau parsing error
+
+**Solution:**
 ```powershell
-# Test script sederhana dulu
-.\vbox-test-simple.ps1
-
-# Jika masih error, set execution policy
+# 1. ALWAYS test minimal script first
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+.\01-test-execution.ps1
 
-# One-liner solution
-powershell -ExecutionPolicy Bypass -File ".\vbox-detect-initial.ps1"
+# 2. If still error, one-liner approach
+powershell -ExecutionPolicy Bypass -File ".\02-detect-virtualbox.ps1"
+
+# 3. Check PowerShell version
+$PSVersionTable.PSVersion
 ```
 
-### VM Tidak Boot Setelah Apply
-
-1. **Restore configuration:**
-   ```bash
-   ./vbox-host-config.sh restore <backup_directory>
-   ```
-
-2. **Reset ke BIOS jika EFI bermasalah:**
-   ```bash
-   VBoxManage modifyvm "YourVM" --firmware bios
-   ```
-
-### PowerShell Execution Policy Error
+### "UnauthorizedAccess" Error
 
 ```powershell
-# Untuk session saat ini saja
+# Run PowerShell as Administrator
+# Then set execution policy
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
-
-# Permanent untuk user saat ini
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-### VirtualBox Services Tidak Start
+### VM Won't Boot After Bypass
+
+**Host-level fix:**
+```bash
+# Restore VM configuration
+./05-host-configuration.sh restore backup_directory
+
+# Or emergency reset
+VBoxManage modifyvm "YourVM" --firmware bios
+```
+
+**Guest-level fix:**
+```powershell
+# Restore original settings
+.\04-restore-original.ps1
+```
+
+### Script "Stops" or Hangs
 
 ```powershell
-# Manual start services
-Start-Service VBoxService -ErrorAction SilentlyContinue
+# Kill PowerShell and restart
+# Use individual commands instead of full script
+# Check Windows Defender real-time protection
 ```
 
-### Backup Directory Tidak Ditemukan
+### Backup Directory Not Found
 
 ```powershell
 # List available backups
-Get-ChildItem -Directory -Name "vbox-backup-*"
+Get-ChildItem -Directory -Name "*backup*" | Sort-Object -Descending
+
+# Or check specific backup
+Test-Path ".\vbox-backup-YYYYMMDD-HHMMSS"
+```
+
+## 🎯 Testing Strategy
+
+### Phase 1: Basic Testing
+1. ✅ Run `01-test-execution.ps1`
+2. ✅ Run `02-detect-virtualbox.ps1`
+3. ✅ Verify backup files created
+
+### Phase 2: Light Bypass
+1. ✅ Run `03-apply-bypass.ps1`
+2. ✅ Test with simple VM detector
+3. ✅ Restart and verify
+
+### Phase 3: Full Bypass
+1. ✅ Host-level configuration
+2. ✅ Guest-level bypass
+3. ✅ Test with target application
+
+### Phase 4: Restoration
+1. ✅ Verify restore works
+2. ✅ Document any issues
+3. ✅ Keep backups safe
+
+## 📝 Backup Management
+
+**Automatic Backups:**
+- Format: `vbox-backup-YYYYMMDD-HHMMSS`
+- Location: Script directory
+- Contents: JSON files + reports
+
+**Manual Backup:**
+```powershell
+# Export VM settings
+VBoxManage showvminfo "YourVM" --machinereadable > vm-backup.txt
+
+# Registry backup
+reg export "HKLM\SOFTWARE\Oracle" oracle-backup.reg
 ```
 
 ## 🛡️ Security Notes
 
-1. **Backup selalu dibuat** sebelum modifikasi
-2. **Administrator privileges** diperlukan
-3. **VM harus shutdown** untuk host modifications
-4. **Test di environment isolated** dulu
-5. **Restore jika ada masalah**
+1. **Always backup** before making changes
+2. **Test in isolated environment** first  
+3. **Monitor system behavior** after bypass
+4. **Keep restore scripts handy**
+5. **Don't use on production systems**
 
-## 🎯 Testing Recommendations
+## 🔗 External Tools
 
-### Online VM Detection Tools:
-- `checkvirtual.com`
-- `hybrid-analysis.com`
-- Custom detector tools
+### Online VM Detection Tests:
+- [Pafish](https://github.com/a0rtega/pafish) - Anti-VM detection tool
+- [CheckVirtual.com](http://checkvirtual.com) - Online VM detector
+- [VMware Detection](https://www.hybrid-analysis.com/) - Malware analysis
 
-### Applications untuk Test:
-- Banking applications
-- DRM-protected software
-- Anti-VM malware samples (research purpose)
-- Online games dengan anti-cheat
-
-## 📝 Logs dan Reports
-
-Semua script menghasilkan:
-- **Backup files** (JSON format)
-- **Detection reports** 
-- **Modification reports**
-- **Restore reports**
-
-Lokasi default: `./vbox-backup-YYYYMMDD-HHMMSS/`
-
-## 🔄 Restoration Process
-
-Jika ingin kembali ke kondisi normal VirtualBox:
-
-1. **Guest OS:**
-   ```powershell
-   .\vbox-bypass-restore.ps1
-   ```
-
-2. **Host OS:**
-   ```bash
-   ./vbox-host-config.sh restore <backup_dir>
-   ```
-
-3. **Restart VM**
-
-## ⚙️ Advanced Configuration
-
-### Custom Hardware Spoofing
-
-Edit file `vbox-host-config.sh` untuk custom manufacturer:
-
-```bash
-# Ganti Dell dengan manufacturer lain
-VBoxManage setextradata "$VM_NAME" "VBoxInternal/Devices/efi/0/Config/DmiSystemVendor" "HP"
-VBoxManage setextradata "$VM_NAME" "VBoxInternal/Devices/efi/0/Config/DmiSystemProduct" "EliteBook 850"
-```
-
-### Custom MAC Address
-
-```bash
-# Generate MAC dengan prefix tertentu
-local new_mac="HP$(openssl rand -hex 4 | tr '[:lower:]' '[:upper:]')"
-```
+### VirtualBox Tools:
+- VBoxManage command reference
+- VM import/export utilities
+- Snapshot management
 
 ## 📚 References
 
-- [VirtualBox Documentation](https://www.virtualbox.org/manual/)
-- [VM Detection Techniques](https://evasions.checkpoint.com/)
+- [VirtualBox Manual](https://www.virtualbox.org/manual/)
+- [VM Evasion Techniques](https://evasions.checkpoint.com/)
 - [Anti-VM Research](https://github.com/CheckPointSW/InviZzzible)
+- [Malware VM Detection](https://malwareanalysis.co/vm-detection/)
 
 ## 🤝 Contributing
 
-Jika menemukan bug atau ingin improvement:
-1. Test scripts di environment yang aman
-2. Document issue dengan detail
-3. Provide solution jika memungkinkan
+Contributions welcome! Please:
+1. Test thoroughly in safe environment
+2. Document all changes clearly
+3. Follow existing code style
+4. Add appropriate error handling
+
+## 📄 License
+
+This toolkit is for educational and research purposes only. Use responsibly and in accordance with applicable laws and terms of service.
 
 ---
 
-**Happy Testing! 🚀** 
+**Happy Testing! 🚀**
+
+> Remember: With great power comes great responsibility. Use these tools ethically and legally. 
