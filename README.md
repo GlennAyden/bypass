@@ -25,7 +25,8 @@ vbox-bypass-toolkit/
 ├── 02-detect-virtualbox.ps1   # Deteksi kondisi VirtualBox saat ini
 ├── 03-apply-bypass.ps1        # Terapkan bypass detection
 ├── 04-restore-original.ps1    # Kembalikan ke kondisi original  
-├── 05-host-configuration.sh   # Konfigurasi dari HOST OS
+├── 05-host-configuration.sh   # Konfigurasi HOST (Linux/macOS/WSL)
+├── 05-host-configuration.ps1  # Konfigurasi HOST (Windows native)
 └── README.md                  # Dokumentasi lengkap
 ```
 
@@ -131,11 +132,11 @@ Restart-Computer
 - System information
 - Service startup types
 
-### 05-host-configuration.sh 🏠
+### 05-host-configuration.sh 🏠 (Linux/macOS/WSL)
 
-**Fungsi:** Konfigurasi VirtualBox dari HOST OS
+**Fungsi:** Konfigurasi VirtualBox dari HOST OS (Unix-like systems)
 **Platform:** Linux, macOS, Windows WSL
-**Requires:** VBoxManage command
+**Requires:** VBoxManage command, bash
 
 **Usage:**
 ```bash
@@ -153,6 +154,30 @@ nano 05-host-configuration.sh
 
 # Restore original
 ./05-host-configuration.sh restore backup_directory
+```
+
+### 05-host-configuration.ps1 🏠 (Windows Native)
+
+**Fungsi:** Konfigurasi VirtualBox dari HOST Windows (tanpa WSL)
+**Platform:** Windows (PowerShell)
+**Requires:** VirtualBox installed, VBoxManage in PATH
+
+**Usage:**
+```powershell
+# Detect VM configuration
+.\05-host-configuration.ps1 detect -VMName "YourVM"
+
+# Apply host-level bypass
+.\05-host-configuration.ps1 apply -VMName "YourVM"
+
+# Apply with force (no confirmation)
+.\05-host-configuration.ps1 apply -VMName "YourVM" -Force
+
+# Restore original
+.\05-host-configuration.ps1 restore -VMName "YourVM"
+
+# Restore from specific backup
+.\05-host-configuration.ps1 restore -VMName "YourVM" -BackupDir "vbox-backup-20231201-143022"
 ```
 
 ## 📊 Efektivitas Bypass
