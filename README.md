@@ -17,17 +17,16 @@ Toolkit komprehensif untuk mendeteksi, menghindari, dan mengembalikan deteksi Vi
 - Fraud atau penipuan
 - Bypass security sistem production
 
-## 📁 Struktur File
+## 📁 File Structure
 
 ```
 vbox-bypass-toolkit/
-├── 01-test-execution.ps1      # Test PowerShell execution (MULAI DARI SINI)
-├── 02-detect-virtualbox.ps1   # Deteksi kondisi VirtualBox saat ini
-├── 03-apply-bypass.ps1        # Terapkan bypass detection
-├── 04-restore-original.ps1    # Kembalikan ke kondisi original  
-├── 05-host-configuration.sh   # Konfigurasi HOST (Linux/macOS/WSL)
-├── 05-host-configuration.ps1  # Konfigurasi HOST (Windows native)
-└── README.md                  # Dokumentasi lengkap
+├── 01-test-execution.ps1      # Test PowerShell execution (START HERE)
+├── 02-detect-virtualbox.ps1   # Detect VirtualBox components  
+├── 03-apply-bypass.ps1        # Apply bypass modifications
+├── 04-restore-original.ps1    # Restore original state
+├── 05-host-configuration.ps1  # Host configuration (Windows PowerShell)
+└── README.md                  # Comprehensive documentation
 ```
 
 ## 🚀 Quick Start Guide
@@ -132,53 +131,48 @@ Restart-Computer
 - System information
 - Service startup types
 
-### 05-host-configuration.sh 🏠 (Linux/macOS/WSL)
+### 05-host-configuration.ps1 🏠 (Windows Host Configuration)
 
-**Fungsi:** Konfigurasi VirtualBox dari HOST OS (Unix-like systems)
-**Platform:** Linux, macOS, Windows WSL
-**Requires:** VBoxManage command, bash
-
-**Usage:**
-```bash
-# Set executable permission
-chmod +x 05-host-configuration.sh
-
-# Edit VM name di script
-nano 05-host-configuration.sh
-
-# Detect VM configuration
-./05-host-configuration.sh detect
-
-# Apply host-level bypass
-./05-host-configuration.sh apply
-
-# Restore original
-./05-host-configuration.sh restore backup_directory
-```
-
-### 05-host-configuration.ps1 🏠 (Windows Native)
-
-**Fungsi:** Konfigurasi VirtualBox dari HOST Windows (tanpa WSL)
-**Platform:** Windows (PowerShell)
+**Fungsi:** Konfigurasi VirtualBox dari HOST Windows (Native PowerShell)
+**Platform:** Windows PowerShell
 **Requires:** VirtualBox installed, VBoxManage in PATH
+
+**Features:**
+- ✅ **Safe Mode**: MAC + basic changes (95% safe, recommended first)
+- ✅ **Full Mode**: Complete DMI spoofing (higher effectiveness)
+- ✅ **Auto Backup**: Automatic configuration backup
+- ✅ **Smart Restore**: Handles empty/missing backup files gracefully
+- ✅ **Error Recovery**: Proper fallback to defaults
 
 **Usage:**
 ```powershell
-# Detect VM configuration
-.\05-host-configuration.ps1 detect -VMName "YourVM"
+# 1. Detect VM configuration and create backup
+.\05-host-configuration.ps1 detect -VMName "TOEFL 1"
 
-# Apply host-level bypass
-.\05-host-configuration.ps1 apply -VMName "YourVM"
+# 2. Apply SAFE MODE bypass (recommended first try)
+.\05-host-configuration.ps1 apply -VMName "TOEFL 1" -SafeMode
 
-# Apply with force (no confirmation)
-.\05-host-configuration.ps1 apply -VMName "YourVM" -Force
+# 3. Apply FULL MODE bypass (if Safe Mode not enough)
+.\05-host-configuration.ps1 apply -VMName "TOEFL 1"
 
-# Restore original
-.\05-host-configuration.ps1 restore -VMName "YourVM"
+# 4. Apply with force (no confirmation prompts)
+.\05-host-configuration.ps1 apply -VMName "TOEFL 1" -Force
 
-# Restore from specific backup
-.\05-host-configuration.ps1 restore -VMName "YourVM" -BackupDir "vbox-backup-20231201-143022"
+# 5. Restore original configuration
+.\05-host-configuration.ps1 restore -VMName "TOEFL 1" -Force
+
+# 6. Restore from specific backup directory
+.\05-host-configuration.ps1 restore -VMName "TOEFL 1" -BackupDir "vbox-backup-20231201-143022"
+
+# 7. View help and all options
+.\05-host-configuration.ps1
 ```
+
+**Safe Mode vs Full Mode:**
+- **Safe Mode**: Only MAC address + paravirtualization changes (95% boot success)
+- **Full Mode**: Complete DMI/BIOS spoofing (higher detection bypass but potential EFI issues)
+
+**IMPORTANT:** Always run `detect` first to create backup, then try `SafeMode` before `Full Mode`.
 
 ## 📊 Efektivitas Bypass
 
@@ -222,12 +216,13 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 ### VM Won't Boot After Bypass
 
 **Host-level fix:**
-```bash
-# Restore VM configuration
-./05-host-configuration.sh restore backup_directory
+```powershell
+# Restore VM configuration (RECOMMENDED)
+.\05-host-configuration.ps1 restore -VMName "TOEFL 1" -Force
 
-# Or emergency reset
-VBoxManage modifyvm "YourVM" --firmware bios
+# Or emergency manual reset
+VBoxManage modifyvm "TOEFL 1" --firmware bios
+VBoxManage setextradata "TOEFL 1" "VBoxInternal/Devices/efi/0/Config/DmiProcessorManufacturer"
 ```
 
 **Guest-level fix:**
