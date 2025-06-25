@@ -20,6 +20,7 @@ vbox-bypass/
 ├── vbox-bypass-apply.ps1      # Terapkan bypass (Guest OS)
 ├── vbox-bypass-restore.ps1    # Kembalikan kondisi awal (Guest OS)
 ├── vbox-host-config.sh        # Konfigurasi host VirtualBox
+├── vbox-test-simple.ps1       # Test script sederhana
 └── README.md                  # Dokumentasi ini
 ```
 
@@ -178,6 +179,21 @@ nano vbox-host-config.sh
 
 ## 🔧 Troubleshooting
 
+### PowerShell Script Tidak Berjalan / Parsing Error
+
+**Masalah:** Script dibuka dengan Notepad atau ada error parsing
+**Solusi:**
+```powershell
+# Test script sederhana dulu
+.\vbox-test-simple.ps1
+
+# Jika masih error, set execution policy
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+
+# One-liner solution
+powershell -ExecutionPolicy Bypass -File ".\vbox-detect-initial.ps1"
+```
+
 ### VM Tidak Boot Setelah Apply
 
 1. **Restore configuration:**
@@ -193,6 +209,10 @@ nano vbox-host-config.sh
 ### PowerShell Execution Policy Error
 
 ```powershell
+# Untuk session saat ini saja
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+
+# Permanent untuk user saat ini
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 

@@ -2,6 +2,7 @@
 # Script untuk mendeteksi kondisi awal sebelum bypass
 # Author: VBox Bypass Tool
 # Usage: .\vbox-detect-initial.ps1
+# Fixed encoding version
 
 Write-Host "=== VirtualBox Detection - Initial State Analysis ===" -ForegroundColor Cyan
 Write-Host "Detecting current VirtualBox signatures..." -ForegroundColor Yellow
